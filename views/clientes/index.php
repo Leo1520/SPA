@@ -13,20 +13,12 @@
 
 <!-- Formulario de búsqueda -->
 <div class="search-box">
-    <form method="GET" action="index.php">
-        <input type="hidden" name="page" value="clientes">
-        <input 
-            type="text" 
-            name="search" 
-            placeholder="Buscar por nombre, apellido o CI..." 
-            value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-            class="search-input"
-        >
-        <button type="submit" class="btn btn-secondary">Buscar</button>
-        <?php if (isset($_GET['search'])): ?>
-            <a href="index.php?page=clientes" class="btn btn-secondary">Limpiar</a>
-        <?php endif; ?>
-    </form>
+    <input 
+        type="text" 
+        id="searchInput"
+        placeholder="Buscar por nombre, apellido o CI..." 
+        class="search-input"
+    >
 </div>
 
 <!-- Tabla de clientes -->
@@ -80,3 +72,62 @@
         </table>
     <?php endif; ?>
 </div>
+
+<script>
+// Búsqueda en tiempo real de clientes
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const table = document.querySelector('.data-table tbody');
+    const emptyState = document.querySelector('.empty-state');
+    
+    if (!searchInput || !table) return;
+    
+    // Obtener todas las filas de clientes
+    const rows = Array.from(table.querySelectorAll('tr'));
+    
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase().trim();
+        let visibleCount = 0;
+        
+        rows.forEach(row => {
+            // Obtener el texto de las columnas: nombre, CI, email, teléfono
+            const nombre = row.cells[1]?.textContent.toLowerCase() || '';
+            const ci = row.cells[2]?.textContent.toLowerCase() || '';
+            const email = row.cells[3]?.textContent.toLowerCase() || '';
+            const telefono = row.cells[4]?.textContent.toLowerCase() || '';
+            
+            // Verificar si coincide con la búsqueda
+            const matches = nombre.includes(searchTerm) || 
+                          ci.includes(searchTerm) || 
+                          email.includes(searchTerm) || 
+                          telefono.includes(searchTerm);
+            
+            // Mostrar u ocultar la fila
+            if (matches) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        // Mostrar mensaje si no hay resultados
+        if (visibleCount === 0 && searchTerm !== '') {
+            if (!document.querySelector('.no-results-message')) {
+                const noResultsMsg = document.createElement('tr');
+                noResultsMsg.className = 'no-results-message';
+                noResultsMsg.innerHTML = '<td colspan="7" style="text-align: center; padding: 2rem; color: #666;">No se encontraron clientes que coincidan con "' + searchTerm + '"</td>';
+                table.appendChild(noResultsMsg);
+            } else {
+                document.querySelector('.no-results-message td').innerHTML = 'No se encontraron clientes que coincidan con "' + searchTerm + '"';
+            }
+        } else {
+            // Eliminar mensaje de no resultados si existe
+            const noResultsMsg = document.querySelector('.no-results-message');
+            if (noResultsMsg) {
+                noResultsMsg.remove();
+            }
+        }
+    });
+});
+</script>

@@ -18,8 +18,8 @@ class ClienteController {
      * Listado de clientes con búsqueda
      */
     public function index() {
-        $search = $_GET['search'] ?? null;
-        $clientes = $this->clienteModel->getAll($search);
+        // Cargar todos los clientes (el filtrado se hace en el frontend)
+        $clientes = $this->clienteModel->getAll();
         
         require_once __DIR__ . '/../views/layout/header.php';
         require_once __DIR__ . '/../views/clientes/index.php';
