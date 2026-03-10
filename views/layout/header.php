@@ -100,6 +100,28 @@ $canAccessSalas = $idRol == 1; // Solo Admin
                 <span class="sidebar-text">Salas</span>
             </a>
             <?php endif; ?>
+
+            <!-- Separador -->
+            <?php if (in_array($idRol, [1, 2])): ?>
+            <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);"></div>
+            <?php endif; ?>
+
+            <!-- REPORTES -->
+            <?php if (in_array($idRol, [1, 2])): ?>
+            <a href="index.php?page=reportes&action=reservasDia" 
+               class="sidebar-item <?= ($currentPage === 'reportes' && ($_GET['action'] ?? '') === 'reservasDia') ? 'active' : '' ?>">
+                <span class="sidebar-icon">📋</span>
+                <span class="sidebar-text">Reporte Diario</span>
+            </a>
+            <?php endif; ?>
+
+            <?php if ($idRol == 1): ?>
+            <a href="index.php?page=reportes&action=ventasEmpleado" 
+               class="sidebar-item <?= ($currentPage === 'reportes' && ($_GET['action'] ?? '') === 'ventasEmpleado') ? 'active' : '' ?>">
+                <span class="sidebar-icon">📊</span>
+                <span class="sidebar-text">Ventas por Empleado</span>
+            </a>
+            <?php endif; ?>
         </nav>
     </div>
 

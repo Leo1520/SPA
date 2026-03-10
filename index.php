@@ -200,6 +200,24 @@ try {
             break;
 
         // ──────────────────────────────────
+        // REPORTES (RF015/RF016)
+        // ──────────────────────────────────
+        case 'reportes':
+            $controller = new ReporteController();
+            switch ($action) {
+                case 'reservasDia':
+                    $controller->reservasDia();
+                    break;
+                case 'ventasEmpleado':
+                    $controller->ventasEmpleado();
+                    break;
+                default:
+                    $controller->reservasDia();
+                    break;
+            }
+            break;
+
+        // ──────────────────────────────────
         // DASHBOARD (redirección por defecto)
         // ──────────────────────────────────
         default:
