@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Factura #<?= htmlspecialchars($factura['numero_factura']) ?> - SPA Las América</title>
+    <title>Factura #<?= str_pad($factura['id'], 6, '0', STR_PAD_LEFT) ?> - SPA Las América</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
         /* Estilos para impresión */
@@ -154,8 +154,8 @@
             </div>
             <div class="factura-info">
                 <div class="factura-numero">FACTURA</div>
-                <div class="factura-numero"><?= htmlspecialchars($factura['numero_factura']) ?></div>
-                <p><strong>Fecha:</strong> <?= date('d/m/Y', strtotime($factura['fecha'])) ?></p>
+                <div class="factura-numero"><?= date('Y') ?>-<?= str_pad($factura['id'], 6, '0', STR_PAD_LEFT) ?></div>
+                <p><strong>Fecha:</strong> <?= date('d/m/Y', strtotime($factura['fecha_emision'])) ?></p>
             </div>
         </div>
 
@@ -164,7 +164,7 @@
             <div>
                 <h3>DATOS DEL CLIENTE</h3>
                 <p><strong>Nombre/Razón Social:</strong><br><?= htmlspecialchars($factura['razon_social']) ?></p>
-                <p><strong>NIT/CI:</strong> <?= htmlspecialchars($factura['nit']) ?></p>
+                <p><strong>NIT/CI:</strong> <?= htmlspecialchars($factura['nit_cliente']) ?></p>
             </div>
             <div>
                 <h3>DATOS DE LA VENTA</h3>

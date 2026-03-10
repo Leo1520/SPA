@@ -70,44 +70,27 @@ class Factura {
      */
     public function create($data) {
         $stmt = $this->db->prepare("
-            INSERT INTO Factura (numero_factura, nit, razon_social, fecha, id_venta)
-            VALUES (?, ?, ?, NOW(), ?)
+            INSERT INTO Factura (nit_cliente, razon_social, total, id_venta)
+            VALUES (?, ?, ?, ?)
         ");
         $stmt->execute([
-            $data['numero_factura'],
-            $data['nit'],
+            $data['nit_cliente'],
             $data['razon_social'],
+            $data['total'],
             $data['id_venta']
         ]);
         return $this->db->lastInsertId();
     }
 
     /**
-     * Generar número de factura único
+     * Generar número de factura formateado a partir del ID
+     * @param int $id
      * @return string
      */
-    public function generateNumeroFactura() {
-        // Formato: YYYY-NNNNNN (año + número secuencial de 6 dígitos)
+    public function formatNumeroFactura($id) {
+        // Formato: YYYY-NNNNNN (año + ID con 6 dígitos)
         $year = date('Y');
-        
-        $stmt = $this->db->prepare("
-            SELECT numero_factura 
-            FROM Factura 
-            WHERE numero_factura LIKE ?
-            ORDER BY numero_factura DESC 
-            LIMIT 1
-        ");
-        $stmt->execute([$year . '%']);
-        $lastFactura = $stmt->fetch();
-        
-        if ($lastFactura) {
-            $lastNumber = intval(substr($lastFactura['numero_factura'], 5));
-            $newNumber = $lastNumber + 1;
-        } else {
-            $newNumber = 1;
-        }
-        
-        return $year . '-' . str_pad($newNumber, 6, '0', STR_PAD_LEFT);
+        return $year . '-' . str_pad($id, 6, '0', STR_PAD_LEFT);
     }
 
     /**

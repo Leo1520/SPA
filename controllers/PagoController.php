@@ -221,14 +221,11 @@ class PagoController {
         }
 
         try {
-            // Generar número de factura
-            $numeroFactura = $this->facturaModel->generateNumeroFactura();
-
             // Crear factura
             $idFactura = $this->facturaModel->create([
-                'numero_factura' => $numeroFactura,
-                'nit' => $nit,
+                'nit_cliente' => $nit,
                 'razon_social' => $razonSocial,
+                'total' => $venta['total'],
                 'id_venta' => $idVenta
             ]);
 
