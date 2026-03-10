@@ -21,6 +21,7 @@ $idRol = $_SESSION['id_rol'];
 // 1 = Administrador, 2 = Recepcionista, 3 = Cajero, 4 = Terapeuta
 $canAccessClientes = in_array($idRol, [1, 2]); // Admin y Recepcionista
 $canAccessReservas = in_array($idRol, [1, 2]); // Admin y Recepcionista
+$canAccessVentas = in_array($idRol, [1, 2, 3]); // Admin, Recepcionista y Cajero
 $canAccessEmpleados = $idRol == 1; // Solo Admin
 $canAccessServicios = $idRol == 1; // Solo Admin
 $canAccessSalas = $idRol == 1; // Solo Admin
@@ -72,10 +73,12 @@ $canAccessSalas = $idRol == 1; // Solo Admin
             </a>
             <?php endif; ?>
 
-            <a href="#" class="sidebar-item disabled" title="Próximamente">
+            <?php if ($canAccessVentas): ?>
+            <a href="index.php?page=ventas" class="sidebar-item <?= $currentPage === 'ventas' ? 'active' : '' ?>">
                 <span class="sidebar-icon">💰</span>
                 <span class="sidebar-text">Ventas</span>
             </a>
+            <?php endif; ?>
 
             <?php if ($canAccessEmpleados): ?>
             <a href="#" class="sidebar-item disabled" title="Próximamente">

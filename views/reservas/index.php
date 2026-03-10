@@ -99,6 +99,16 @@ function getEstadoBadge($estado) {
                                 </a>
                             <?php endif;
                             
+                            // Botón Generar Venta (solo si está Completada y no tiene venta)
+                            if ($estado === 'Completada' && !$reserva['tiene_venta'] && in_array($idRol, [1, 2, 3])): ?>
+                                <a href="index.php?page=ventas&action=create&id_reserva=<?= $idReserva ?>" 
+                                   class="btn-action btn-primary" 
+                                   title="Generar venta"
+                                   style="background: #28a745;">
+                                    💰 Generar Venta
+                                </a>
+                            <?php endif;
+                            
                             // Botón Cancelar (solo si está Pendiente o Confirmada)
                             if (in_array($estado, ['Pendiente', 'Confirmada']) && in_array($idRol, [1, 2])): ?>
                                 <a href="javascript:void(0)" 

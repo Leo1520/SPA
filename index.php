@@ -129,6 +129,27 @@ try {
             break;
 
         // ──────────────────────────────────
+        // GESTIÓN DE VENTAS
+        // ──────────────────────────────────
+        case 'ventas':
+            $controller = new VentaController();
+            switch ($action) {
+                case 'create':
+                    $controller->create();
+                    break;
+                case 'store':
+                    $controller->store();
+                    break;
+                case 'show':
+                    $controller->show();
+                    break;
+                default:
+                    $controller->index();
+                    break;
+            }
+            break;
+
+        // ──────────────────────────────────
         // DASHBOARD (redirección por defecto)
         // ──────────────────────────────────
         default:

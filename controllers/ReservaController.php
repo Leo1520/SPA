@@ -31,6 +31,11 @@ class ReservaController {
         $estado = $_GET['estado'] ?? null;
         $reservas = $this->reservaModel->getAll($estado);
         
+        // Para cada reserva, verificar si tiene venta
+        foreach ($reservas as &$reserva) {
+            $reserva['tiene_venta'] = $this->reservaModel->hasVenta($reserva['id']);
+        }
+        
         require_once __DIR__ . '/../views/layout/header.php';
         require_once __DIR__ . '/../views/reservas/index.php';
         require_once __DIR__ . '/../views/layout/footer.php';
