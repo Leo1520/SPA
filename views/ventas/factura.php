@@ -149,7 +149,7 @@
             <div class="factura-logo">
                 <h1>🌿 SPA LAS AMÉRICA</h1>
                 <p>Centro de Relajación y Bienestar</p>
-                <p>Teléfono: (123) 456-7890</p>
+                <p>Teléfono: (+591) 75678428</p>
                 <p>Email: info@spalasamerica.com</p>
             </div>
             <div class="factura-info">
