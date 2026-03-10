@@ -143,6 +143,26 @@ try {
                 case 'show':
                     $controller->show();
                     break;
+                case 'storePago':
+                    // Registrar pago
+                    $pagoController = new PagoController();
+                    $pagoController->store();
+                    break;
+                case 'emitirFactura':
+                    // Mostrar formulario de factura
+                    $pagoController = new PagoController();
+                    $pagoController->emitirFactura();
+                    break;
+                case 'storeFactura':
+                    // Guardar factura
+                    $pagoController = new PagoController();
+                    $pagoController->storeFactura();
+                    break;
+                case 'factura':
+                    // Ver factura imprimible
+                    $pagoController = new PagoController();
+                    $pagoController->verFactura();
+                    break;
                 default:
                     $controller->index();
                     break;

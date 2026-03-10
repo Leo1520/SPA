@@ -193,7 +193,8 @@ class VentaController {
     }
 
     /**
-     * Ver detalle de una venta (para Fase 3)
+     * Ver detalle de una venta con pagos y factura
+     * RF003 + RF004
      */
     public function show() {
         $id = $_GET['id'] ?? null;
@@ -212,23 +213,31 @@ class VentaController {
             exit();
         }
 
+        // Obtener detalles de la venta
         $detalles = $this->detalleVentaModel->getByVenta($id);
 
-        require_once __DIR__ . '/../views/layout/header.php';
-        echo '<div class="page-header"><h2 class="page-title">Detalle de Venta #' . $id . '</h2></div>';
-        echo '<div class="form-container">';
-        echo '<p><strong>Cliente:</strong> ' . htmlspecialchars($venta['cliente_nombre']) . '</p>';
-        echo '<p><strong>Fecha:</strong> ' . date('d/m/Y', strtotime($venta['fecha'])) . '</p>';
-        echo '<p><strong>Total:</strong> Bs. ' . number_format($venta['total'], 2) . '</p>';
-        echo '<p><strong>Total Pagado:</strong> Bs. ' . number_format($venta['total_pagado'], 2) . '</p>';
-        echo '<p><strong>Saldo:</strong> Bs. ' . number_format($venta['total'] - $venta['total_pagado'], 2) . '</p>';
-        echo '<h3>Servicios:</h3><ul>';
-        foreach ($detalles as $detalle) {
-            echo '<li>' . htmlspecialchars($detalle['servicio_nombre']) . ' - Bs. ' . number_format($detalle['subtotal'], 2) . '</li>';
+        // Obtener pagos registrados
+        $pagoModel = new Pago();
+        $pagos = $pagoModel->getByVenta($id);
+        $totalPagado = $pagoModel->getTotalPagado($id);
+        $saldoPendiente = $venta['total'] - $totalPagado;
+
+        // Verificar si tiene factura
+        $facturaModel = new Factura();
+        $tieneFactura = $facturaModel->existsByVenta($id);
+        $factura = $tieneFactura ? $facturaModel->getByVenta($id) : null;
+
+        // Obtener métodos de pago para el formulario
+        $metodoPagoModel = new MetodoPago();
+        $metodosPago = $metodoPagoModel->getAll();
+
+        // Generar token CSRF
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
-        echo '</ul>';
-        echo '<a href="index.php?page=ventas" class="btn btn-secondary">Volver</a>';
-        echo '</div>';
+
+        require_once __DIR__ . '/../views/layout/header.php';
+        require_once __DIR__ . '/../views/ventas/show.php';
         require_once __DIR__ . '/../views/layout/footer.php';
     }
 }
