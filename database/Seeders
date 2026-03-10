@@ -1,0 +1,303 @@
+-- ============================================================
+-- DATOS DE PRUEBA – spa_america
+-- Ejecutar en MySQL Workbench o Laragon Terminal
+-- ============================================================
+
+USE spa_america;
+
+-- ============================================================
+-- ROLES
+-- ============================================================
+
+INSERT INTO Rol (nombre) VALUES
+('Administrador'),
+('Recepcionista'),
+('Cajero'),
+('Terapeuta');
+
+-- ============================================================
+-- EMPLEADOS
+-- ============================================================
+
+INSERT INTO Empleado (nombre, apellido, fecha_nacimiento, ci, email, telefono, cargo, fecha_contratacion, activo) VALUES
+('Carlos',    'Mendoza Ríos',      '1985-03-12', '5234871',  'carlos.mendoza@spa.com',    '76541230', 'Administrador',       '2020-01-15', TRUE),
+('Valeria',   'Torrez Salinas',    '1992-07-24', '7891234',  'valeria.torrez@spa.com',    '77892341', 'Recepcionista',       '2021-03-01', TRUE),
+('Sofía',     'Arce Pedraza',      '1990-11-05', '6523147',  'sofia.arce@spa.com',        '78123456', 'Terapeuta',           '2021-06-15', TRUE),
+('Daniela',   'Vargas Montero',    '1994-02-18', '8012345',  'daniela.vargas@spa.com',    '79234567', 'Terapeuta',           '2022-01-10', TRUE),
+('Luciana',   'Chávez Orellana',   '1988-09-30', '5678901',  'luciana.chavez@spa.com',    '76345678', 'Terapeuta',           '2020-08-20', TRUE),
+('Roberto',   'Flores Gutiérrez',  '1991-04-22', '7234560',  'roberto.flores@spa.com',    '77456789', 'Terapeuta',           '2022-05-01', TRUE),
+('Marcela',   'Rojas Suárez',      '1987-12-14', '6890123',  'marcela.rojas@spa.com',     '78567890', 'Cajero',              '2021-09-01', TRUE),
+('Fernando',  'Lima Castro',       '1995-06-08', '8345678',  'fernando.lima@spa.com',     '79678901', 'Recepcionista',       '2023-02-15', TRUE);
+
+-- ============================================================
+-- ESPECIALIDADES
+-- ============================================================
+
+INSERT INTO Especialidad (nombre, descripcion) VALUES
+('Masajes Terapéuticos',    'Técnicas de masaje para alivio muscular y relajación profunda'),
+('Tratamientos Faciales',   'Limpieza, hidratación y rejuvenecimiento facial'),
+('Hidroterapia',            'Tratamientos con agua, aromaterapia y baños de inmersión'),
+('Depilación',              'Técnicas de depilación con cera y láser'),
+('Tratamientos Corporales', 'Exfoliaciones, envolturas y tratamientos reductores');
+
+-- ============================================================
+-- EMPLEADO – ESPECIALIDAD
+-- ============================================================
+
+INSERT INTO Empleado_Especialidad (id_empleado, id_especialidad) VALUES
+(3, 1), (3, 2),   -- Sofía: Masajes + Facial
+(4, 1), (4, 5),   -- Daniela: Masajes + Corporales
+(5, 2), (5, 3),   -- Luciana: Facial + Hidroterapia
+(6, 3), (6, 4),   -- Roberto: Hidroterapia + Depilación
+(8, 4), (8, 5);   -- Fernando: Depilación + Corporales (también recepcionista)
+
+-- ============================================================
+-- SALAS
+-- ============================================================
+
+INSERT INTO Sala (nombre, capacidad, ubicacion) VALUES
+('Sala Relajación 1',   1, 'Planta baja - Ala norte'),
+('Sala Relajación 2',   1, 'Planta baja - Ala norte'),
+('Sala Facial',         1, 'Planta baja - Ala sur'),
+('Sala Hidroterapia',   2, 'Planta alta - Centro'),
+('Sala Masajes VIP',    1, 'Planta alta - Ala norte'),
+('Sala Corporal',       1, 'Planta alta - Ala sur');
+
+-- ============================================================
+-- SERVICIOS
+-- ============================================================
+
+INSERT INTO Servicio (nombre, descripcion, duracion_min, precio, activo) VALUES
+('Masaje Relajante',         'Masaje de cuerpo completo con aceites esenciales para liberar tensiones',          60,  150.00, TRUE),
+('Masaje Descontracturante', 'Técnica profunda para contracturas musculares y dolores crónicos',                 60,  180.00, TRUE),
+('Masaje con Piedras Calientes', 'Masaje con basalto volcánico para circulación y relajación profunda',         75,  220.00, TRUE),
+('Limpieza Facial Profunda', 'Limpieza, exfoliación e hidratación facial completa',                              60,  130.00, TRUE),
+('Tratamiento Anti-edad',    'Radiofrecuencia y sueros rejuvenecedores para firmeza de la piel',                 75,  280.00, TRUE),
+('Hidratación Facial',       'Mascarilla nutritiva y sérum de ácido hialurónico',                                45,  100.00, TRUE),
+('Baño de Inmersión',        'Baño aromaterapéutico con sales minerales y flores',                               45,  120.00, TRUE),
+('Circuito Hidroterapia',    'Sauna + jacuzzi + ducha escocesa + sala de reposo',                               120,  350.00, TRUE),
+('Depilación Piernas',       'Depilación completa de piernas con cera tibia',                                    45,   90.00, TRUE),
+('Depilación Axilas',        'Depilación de axilas con cera caliente',                                           20,   50.00, TRUE),
+('Exfoliación Corporal',     'Exfoliación con sal del Himalaya y aceite de almendras',                           45,  110.00, TRUE),
+('Envoltura Reductora',      'Envoltura con algas marinas y vendas frías para reducción de medidas',             60,  160.00, TRUE),
+('Pack Novia',               'Facial completo + masaje relajante + manicure + pedicure',                        180,  450.00, TRUE),
+('Masaje de Pies',           'Reflexología podal y masaje relajante de pies y pantorrillas',                     30,   70.00, TRUE),
+('Tratamiento Capilar',      'Hidratación profunda y masaje de cuero cabelludo',                                  45,   95.00, FALSE); -- inactivo
+
+-- ============================================================
+-- INSUMOS
+-- ============================================================
+
+INSERT INTO Insumo (nombre, descripcion, stock, stock_minimo, unidad_medida, costo_unitario) VALUES
+('Aceite de Lavanda',       'Aceite esencial puro para masajes relajantes',              500,  100, 'ml',    0.85),
+('Aceite de Argán',         'Aceite nutritivo para tratamientos faciales',               300,   80, 'ml',    1.20),
+('Sales de Baño',           'Sales minerales del Himalaya para baños',                  5000, 1000, 'g',    0.05),
+('Cera Depilatoria Tibia',  'Cera para depilación de zonas grandes',                    2000,  500, 'g',    0.12),
+('Cera Depilatoria Caliente','Cera para depilación de zonas sensibles',                  800,  200, 'g',    0.18),
+('Mascarilla Hidratante',   'Mascarilla de ácido hialurónico y aloe vera',               120,   30, 'unidad',8.50),
+('Exfoliante Corporal',     'Exfoliante de sal y aceite de almendras',                  3000,  500, 'g',    0.08),
+('Piedras de Basalto',      'Set de piedras volcánicas para masaje térmico',               15,    5, 'unidad',25.00),
+('Toallas Pequeñas',        'Toallas de algodón para tratamientos',                        50,   15, 'unidad', 3.50),
+('Toallas Grandes',         'Toallas de cuerpo completo',                                   30,   10, 'unidad', 7.00),
+('Algas Marinas',           'Algas en polvo para envolturas reductoras',                 1500,  300, 'g',    0.15),
+('Sérum Anti-edad',         'Sérum con retinol y vitamina C',                               45,   10, 'unidad',18.00);
+
+-- ============================================================
+-- SERVICIO – INSUMO
+-- ============================================================
+
+INSERT INTO Servicio_Insumo (id_servicio, id_insumo, cantidad_usada) VALUES
+(1,  1, 30),   -- Masaje Relajante: aceite lavanda
+(1,  9,  2),   -- Masaje Relajante: toallas pequeñas
+(2,  1, 30),   -- Masaje Descontracturante: aceite lavanda
+(3,  8,  1),   -- Masaje Piedras: piedras basalto
+(3,  1, 20),   -- Masaje Piedras: aceite lavanda
+(4,  6,  1),   -- Limpieza Facial: mascarilla
+(4,  2, 10),   -- Limpieza Facial: aceite argán
+(5, 12,  1),   -- Anti-edad: sérum
+(6,  6,  1),   -- Hidratación Facial: mascarilla
+(7,  3, 200),  -- Baño Inmersión: sales
+(8,  3, 300),  -- Circuito Hidro: sales
+(9,  4, 100),  -- Depilación Piernas: cera tibia
+(10, 5,  30),  -- Depilación Axilas: cera caliente
+(11, 7, 150),  -- Exfoliación: exfoliante
+(12, 11, 100); -- Envoltura: algas
+
+-- ============================================================
+-- USUARIOS (password: Spa2024! para todos excepto admin)
+-- admin → password: admin123
+-- ============================================================
+
+-- Para PHP usar password_hash('Spa2024!', PASSWORD_DEFAULT)
+-- Estos hashes son válidos para password_verify()
+
+INSERT INTO Usuario (username, password, activo, id_rol, id_empleado) VALUES
+('admin',     '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, 1, 1),
+('valeria',   '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, 2, 2),
+('sofia',     '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, 4, 3),
+('daniela',   '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, 4, 4),
+('luciana',   '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, 4, 5),
+('roberto',   '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, 4, 6),
+('marcela',   '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, 3, 7),
+('fernando',  '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, 2, 8);
+
+-- NOTA: El hash '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
+-- corresponde a la contraseña: password
+-- Cambia a password_hash('Spa2024!', PASSWORD_DEFAULT) si quieres otra clave
+
+-- ============================================================
+-- CLIENTES
+-- ============================================================
+
+INSERT INTO Cliente (nombre, apellido, ci, email, telefono, fecha_nacimiento, fecha_registro) VALUES
+('Ana María',    'Gutiérrez Paz',      '9123456', 'ana.gutierrez@gmail.com',     '76112233', '1990-05-14', '2024-01-10 09:30:00'),
+('Patricia',     'Soliz Herrera',      '8234567', 'patricia.soliz@hotmail.com',  '77223344', '1985-11-22', '2024-01-15 10:00:00'),
+('Mónica',       'Vargas Díaz',        '7345678', 'monica.vargas@gmail.com',     '78334455', '1992-03-08', '2024-02-01 11:15:00'),
+('Claudia',      'Mamani Quispe',      '6456789', 'claudia.mamani@yahoo.com',    '79445566', '1988-07-19', '2024-02-10 14:30:00'),
+('Roberto',      'Fernández Cruz',     '5567890', 'roberto.fernandez@gmail.com', '76556677', '1975-12-01', '2024-02-20 09:00:00'),
+('Alejandra',    'Torres Medina',      '4678901', 'alejandra.torres@gmail.com',  '77667788', '1995-09-25', '2024-03-05 16:00:00'),
+('Isabel',       'Chávez Roca',        '3789012', 'isabel.chavez@hotmail.com',   '78778899', '1982-04-17', '2024-03-12 10:30:00'),
+('Jorge',        'Mendoza Ibáñez',     '2890123', 'jorge.mendoza@gmail.com',     '79889900', '1978-08-30', '2024-03-18 12:00:00'),
+('Carla',        'Ríos Aguilar',       '1901234', 'carla.rios@gmail.com',        '76990011', '1998-01-11', '2024-04-02 09:45:00'),
+('Valentina',    'Loza Cuentas',       '9012345', 'valentina.loza@gmail.com',    '77001122', '2000-06-28', '2024-04-15 15:00:00'),
+('Sandra',       'Quiroga Blanco',     '8901234', 'sandra.quiroga@hotmail.com',  '78112233', '1987-10-03', '2024-05-01 11:00:00'),
+('Camila',       'Pinto Salazar',      '7890123', 'camila.pinto@gmail.com',      '79223344', '1996-02-14', '2024-05-20 13:30:00'),
+('Beatriz',      'Antelo Vega',        '6789012', 'beatriz.antelo@gmail.com',    '76334455', '1983-07-07', '2024-06-01 10:00:00'),
+('Lorena',       'Camacho Suárez',     '5678901', 'lorena.camacho@yahoo.com',    '77445566', '1991-12-20', '2024-06-10 14:00:00'),
+('Diana',        'Arroyo Villena',     '4567890', 'diana.arroyo@gmail.com',      '78556677', '1994-05-05', '2024-07-01 09:00:00');
+
+-- ============================================================
+-- MÉTODOS DE PAGO
+-- ============================================================
+
+INSERT INTO Metodo_Pago (nombre) VALUES
+('Efectivo'),
+('Tarjeta de Débito'),
+('Tarjeta de Crédito'),
+('QR / Transferencia'),
+('Vale de Regalo');
+
+-- ============================================================
+-- RESERVAS + DETALLE RESERVA
+-- ============================================================
+
+-- Reserva 1: Ana María - Masaje Relajante (Completada)
+INSERT INTO Reserva (fecha, estado, id_cliente) VALUES ('2024-11-10', 'Completada', 1);
+INSERT INTO Detalle_Reserva (hora_inicio, hora_fin, precio, observaciones, id_reserva, id_servicio, id_empleado, id_sala) VALUES
+('10:00:00', '11:00:00', 150.00, 'Primera visita de la cliente', 1, 1, 3, 1);
+
+-- Reserva 2: Patricia - Limpieza Facial + Masaje Relajante (Completada)
+INSERT INTO Reserva (fecha, estado, id_cliente) VALUES ('2024-11-12', 'Completada', 2);
+INSERT INTO Detalle_Reserva (hora_inicio, hora_fin, precio, observaciones, id_reserva, id_servicio, id_empleado, id_sala) VALUES
+('09:00:00', '10:00:00', 130.00, NULL, 2, 4, 5, 3),
+('10:30:00', '11:30:00', 150.00, NULL, 2, 1, 3, 1);
+
+-- Reserva 3: Mónica - Circuito Hidroterapia (Completada)
+INSERT INTO Reserva (fecha, estado, id_cliente) VALUES ('2024-11-15', 'Completada', 3);
+INSERT INTO Detalle_Reserva (hora_inicio, hora_fin, precio, observaciones, id_reserva, id_servicio, id_empleado, id_sala) VALUES
+('14:00:00', '16:00:00', 350.00, 'Solicita música suave', 3, 8, 6, 4);
+
+-- Reserva 4: Claudia - Masaje Piedras Calientes (Completada)
+INSERT INTO Reserva (fecha, estado, id_cliente) VALUES ('2024-11-20', 'Completada', 4);
+INSERT INTO Detalle_Reserva (hora_inicio, hora_fin, precio, observaciones, id_reserva, id_servicio, id_empleado, id_sala) VALUES
+('11:00:00', '12:15:00', 220.00, NULL, 4, 3, 4, 5);
+
+-- Reserva 5: Alejandra - Depilación Piernas (Confirmada)
+INSERT INTO Reserva (fecha, estado, id_cliente) VALUES ('2025-03-12', 'Confirmada', 6);
+INSERT INTO Detalle_Reserva (hora_inicio, hora_fin, precio, observaciones, id_reserva, id_servicio, id_empleado, id_sala) VALUES
+('09:30:00', '10:15:00', 90.00, NULL, 5, 9, 6, 6);
+
+-- Reserva 6: Isabel - Pack Novia (Confirmada)
+INSERT INTO Reserva (fecha, estado, id_cliente) VALUES ('2025-03-15', 'Confirmada', 7);
+INSERT INTO Detalle_Reserva (hora_inicio, hora_fin, precio, observaciones, id_reserva, id_servicio, id_empleado, id_sala) VALUES
+('09:00:00', '12:00:00', 450.00, 'Evento: boda el 20/03. Requiere resultado impecable', 6, 13, 5, 5);
+
+-- Reserva 7: Carla - Masaje Relajante (Pendiente - HOY)
+INSERT INTO Reserva (fecha, estado, id_cliente) VALUES (CURDATE(), 'Pendiente', 9);
+INSERT INTO Detalle_Reserva (hora_inicio, hora_fin, precio, observaciones, id_reserva, id_servicio, id_empleado, id_sala) VALUES
+('15:00:00', '16:00:00', 150.00, NULL, 7, 1, 3, 2);
+
+-- Reserva 8: Valentina - Hidratación Facial (Pendiente - HOY)
+INSERT INTO Reserva (fecha, estado, id_cliente) VALUES (CURDATE(), 'Pendiente', 10);
+INSERT INTO Detalle_Reserva (hora_inicio, hora_fin, precio, observaciones, id_reserva, id_servicio, id_empleado, id_sala) VALUES
+('16:00:00', '16:45:00', 100.00, NULL, 8, 6, 5, 3);
+
+-- Reserva 9: Sandra - Exfoliación + Envoltura (Pendiente - MAÑANA)
+INSERT INTO Reserva (fecha, estado, id_cliente) VALUES (DATE_ADD(CURDATE(), INTERVAL 1 DAY), 'Pendiente', 11);
+INSERT INTO Detalle_Reserva (hora_inicio, hora_fin, precio, observaciones, id_reserva, id_servicio, id_empleado, id_sala) VALUES
+('10:00:00', '10:45:00', 110.00, NULL, 9, 11, 4, 6),
+('11:00:00', '12:00:00', 160.00, 'Segunda sesión reductora', 9, 12, 4, 6);
+
+-- Reserva 10: Camila - Masaje Descontracturante (Cancelada)
+INSERT INTO Reserva (fecha, estado, id_cliente) VALUES ('2024-12-05', 'Cancelada', 12);
+INSERT INTO Detalle_Reserva (hora_inicio, hora_fin, precio, observaciones, id_reserva, id_servicio, id_empleado, id_sala) VALUES
+('10:00:00', '11:00:00', 180.00, 'Canceló por viaje', 10, 2, 3, 1);
+
+-- ============================================================
+-- VENTAS + DETALLE VENTA (solo de reservas Completadas)
+-- ============================================================
+
+-- Venta de Reserva 1
+INSERT INTO Venta (total, id_reserva) VALUES (150.00, 1);
+INSERT INTO Detalle_Venta (cantidad, precio_unitario, subtotal, id_venta, id_servicio) VALUES (1, 150.00, 150.00, 1, 1);
+
+-- Venta de Reserva 2 (2 servicios)
+INSERT INTO Venta (total, id_reserva) VALUES (280.00, 2);
+INSERT INTO Detalle_Venta (cantidad, precio_unitario, subtotal, id_venta, id_servicio) VALUES
+(1, 130.00, 130.00, 2, 4),
+(1, 150.00, 150.00, 2, 1);
+
+-- Venta de Reserva 3
+INSERT INTO Venta (total, id_reserva) VALUES (350.00, 3);
+INSERT INTO Detalle_Venta (cantidad, precio_unitario, subtotal, id_venta, id_servicio) VALUES (1, 350.00, 350.00, 3, 8);
+
+-- Venta de Reserva 4
+INSERT INTO Venta (total, id_reserva) VALUES (220.00, 4);
+INSERT INTO Detalle_Venta (cantidad, precio_unitario, subtotal, id_venta, id_servicio) VALUES (1, 220.00, 220.00, 4, 3);
+
+-- ============================================================
+-- PAGOS
+-- ============================================================
+
+INSERT INTO Pago (monto, id_venta, id_metodo_pago) VALUES
+(150.00, 1, 1),   -- Ana María: efectivo
+(280.00, 2, 2),   -- Patricia: tarjeta débito
+(350.00, 3, 4),   -- Mónica: QR
+(220.00, 4, 1);   -- Claudia: efectivo
+
+-- ============================================================
+-- FACTURAS
+-- ============================================================
+
+INSERT INTO Factura (nit_cliente, razon_social, total, id_venta) VALUES
+('9123456',  'Ana María Gutiérrez Paz',   150.00, 1),
+('8234567',  'Patricia Soliz Herrera',    280.00, 2),
+('7345678',  'Mónica Vargas Díaz',        350.00, 3),
+('6456789',  'Claudia Mamani Quispe',     220.00, 4);
+
+-- ============================================================
+-- MOVIMIENTOS DE INVENTARIO
+-- ============================================================
+
+INSERT INTO Movimiento_Inventario (tipo, cantidad, motivo, id_insumo, id_detalle_reserva, id_usuario) VALUES
+('salida',  30, 'Uso en servicio: Masaje Relajante',        1, 1, 3),
+('salida',  30, 'Uso en servicio: Limpieza Facial',         2, 2, 5),
+('salida',   1, 'Uso en servicio: Mascarilla',              6, 2, 5),
+('salida', 300, 'Uso en servicio: Circuito Hidroterapia',   3, 3, 6),
+('salida',   1, 'Uso en servicio: Piedras Basalto',         8, 4, 4),
+('entrada', 500, 'Reposición stock aceite lavanda',         1, NULL, 1),
+('entrada', 1000,'Reposición sales de baño',                3, NULL, 1);
+
+-- ============================================================
+-- FIN DEL SCRIPT
+-- ============================================================
+-- USUARIOS Y CONTRASEÑAS DE ACCESO:
+--   admin    / password  (Administrador)
+--   valeria  / password  (Recepcionista)
+--   sofia    / password  (Terapeuta)
+--   daniela  / password  (Terapeuta)
+--   luciana  / password  (Terapeuta)
+--   roberto  / password  (Terapeuta)
+--   marcela  / password  (Cajero)
+--   fernando / password  (Recepcionista)
+-- ============================================================

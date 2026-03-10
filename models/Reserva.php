@@ -101,4 +101,15 @@ class Reserva {
         $stmt = $this->db->prepare("DELETE FROM Reserva WHERE id = ?");
         return $stmt->execute([$id]);
     }
+
+    /**
+     * Verificar si una reserva tiene venta asociada
+     * @param int $id
+     * @return bool
+     */
+    public function hasVenta($id) {
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM Venta WHERE id_reserva = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetchColumn() > 0;
+    }
 }

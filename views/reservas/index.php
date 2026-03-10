@@ -57,6 +57,7 @@ function getEstadoBadge($estado) {
                     <th>Estado</th>
                     <th>Servicios</th>
                     <th>Fecha Registro</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,9 +73,75 @@ function getEstadoBadge($estado) {
                         </td>
                         <td><?= htmlspecialchars($reserva['cantidad_servicios']) ?></td>
                         <td><?= date('d/m/Y H:i', strtotime($reserva['fecha_registro'])) ?></td>
+                        <td class="table-actions">
+                            <?php
+                            $estado = $reserva['estado'];
+                            $idReserva = $reserva['id'];
+                            $idRol = $_SESSION['id_rol'];
+                            
+                            // Botón Confirmar (solo si está Pendiente)
+                            if ($estado === 'Pendiente' && in_array($idRol, [1, 2])): ?>
+                                <a href="index.php?page=reservas&action=updateEstado&id=<?= $idReserva ?>&estado=Confirmada" 
+                                   class="btn-action btn-primary" 
+                                   title="Confirmar reserva"
+                                   onclick="return confirm('¿Confirmar esta reserva?')">
+                                    ✓ Confirmar
+                                </a>
+                            <?php endif;
+                            
+                            // Botón Completar (solo si está Confirmada)
+                            if ($estado === 'Confirmada' && in_array($idRol, [1, 2, 4])): ?>
+                                <a href="index.php?page=reservas&action=updateEstado&id=<?= $idReserva ?>&estado=Completada" 
+                                   class="btn-action btn-success" 
+                                   title="Marcar como completada"
+                                   onclick="return confirm('¿Marcar esta reserva como completada?')">
+                                    ✓ Completar
+                                </a>
+                            <?php endif;
+                            
+                            // Botón Cancelar (solo si está Pendiente o Confirmada)
+                            if (in_array($estado, ['Pendiente', 'Confirmada']) && in_array($idRol, [1, 2])): ?>
+                                <a href="javascript:void(0)" 
+                                   class="btn-action btn-warning" 
+                                   title="Cancelar reserva"
+                                   onclick="cancelarReserva(<?= $idReserva ?>)">
+                                    ✗ Cancelar
+                                </a>
+                            <?php endif;
+                            
+                            // Botón Eliminar (solo Admin y solo si no está Completada)
+                            if ($idRol === 1 && $estado !== 'Completada'): ?>
+                                <a href="index.php?page=reservas&action=delete&id=<?= $idReserva ?>" 
+                                   class="btn-action btn-delete" 
+                                   title="Eliminar reserva"
+                                   onclick="return confirm('¿Está seguro de eliminar esta reserva? Esta acción no se puede deshacer.')">
+                                    🗑️
+                                </a>
+                            <?php endif; ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     <?php endif; ?>
 </div>
+
+<script>
+// Función para cancelar reserva con motivo
+function cancelarReserva(idReserva) {
+    const motivo = prompt('Ingrese el motivo de cancelación:');
+    
+    if (motivo === null) {
+        // Usuario canceló el prompt
+        return;
+    }
+    
+    if (motivo.trim() === '') {
+        alert('Debe ingresar un motivo para cancelar la reserva');
+        return;
+    }
+    
+    // Redirigir con el motivo
+    window.location.href = `index.php?page=reservas&action=updateEstado&id=${idReserva}&estado=Cancelada&motivo=${encodeURIComponent(motivo)}`;
+}
+</script>

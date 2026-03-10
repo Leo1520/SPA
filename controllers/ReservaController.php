@@ -188,4 +188,122 @@ class ReservaController {
             exit();
         }
     }
+
+    /**
+     * Actualizar estado de una reserva
+     * RF006 - ACTUALIZAR ESTADO DE RESERVA
+     */
+    public function updateEstado() {
+        // Verificar permisos por rol
+        $idRol = $_SESSION['id_rol'];
+        if (!in_array($idRol, [1, 2, 4])) { // Admin, Recepcionista, Terapeuta
+            $_SESSION['flash']['error'] = 'No tiene permisos para realizar esta acción';
+            header('Location: index.php?page=reservas');
+            exit();
+        }
+
+        $idReserva = $_GET['id'] ?? null;
+        $nuevoEstado = $_GET['estado'] ?? null;
+        $motivo = $_GET['motivo'] ?? null;
+
+        if (!$idReserva || !$nuevoEstado) {
+            $_SESSION['flash']['error'] = 'Datos insuficientes para actualizar el estado';
+            header('Location: index.php?page=reservas');
+            exit();
+        }
+
+        try {
+            // Obtener reserva actual
+            $reserva = $this->reservaModel->getById($idReserva);
+            
+            if (!$reserva) {
+                $_SESSION['flash']['error'] = 'Reserva no encontrada';
+                header('Location: index.php?page=reservas');
+                exit();
+            }
+
+            $estadoActual = $reserva['estado'];
+
+            // Validar transiciones de estado permitidas
+            $transicionesPermitidas = [
+                'Pendiente' => ['Confirmada', 'Cancelada'],
+                'Confirmada' => ['Completada', 'Cancelada'],
+                'Completada' => [],
+                'Cancelada' => []
+            ];
+
+            if (!in_array($nuevoEstado, $transicionesPermitidas[$estadoActual])) {
+                $_SESSION['flash']['error'] = 'Transición de estado no permitida';
+                header('Location: index.php?page=reservas');
+                exit();
+            }
+
+            // Si es cancelación, guardar motivo en observaciones del primer detalle
+            if ($nuevoEstado === 'Cancelada' && $motivo) {
+                $this->detalleReservaModel->updateObservacionesByReserva($idReserva, 
+                    "CANCELADA: " . $motivo);
+            }
+
+            // Actualizar estado
+            $this->reservaModel->updateEstado($idReserva, $nuevoEstado);
+
+            $_SESSION['flash']['success'] = "Reserva actualizada a estado: $nuevoEstado";
+            
+        } catch (Exception $e) {
+            $_SESSION['flash']['error'] = 'Error al actualizar el estado: ' . $e->getMessage();
+        }
+
+        header('Location: index.php?page=reservas');
+        exit();
+    }
+
+    /**
+     * Eliminar una reserva
+     * RF006 - Solo Admin, verificar que no tenga ventas asociadas
+     */
+    public function delete() {
+        // Solo Admin puede eliminar
+        if ($_SESSION['id_rol'] !== 1) {
+            $_SESSION['flash']['error'] = 'Solo el administrador puede eliminar reservas';
+            header('Location: index.php?page=reservas');
+            exit();
+        }
+
+        $idReserva = $_GET['id'] ?? null;
+
+        if (!$idReserva) {
+            $_SESSION['flash']['error'] = 'ID de reserva no especificado';
+            header('Location: index.php?page=reservas');
+            exit();
+        }
+
+        try {
+            // Verificar que la reserva existe
+            $reserva = $this->reservaModel->getById($idReserva);
+            
+            if (!$reserva) {
+                $_SESSION['flash']['error'] = 'Reserva no encontrada';
+                header('Location: index.php?page=reservas');
+                exit();
+            }
+
+            // Verificar que no tenga venta asociada
+            if ($this->reservaModel->hasVenta($idReserva)) {
+                $_SESSION['flash']['error'] = 'No se puede eliminar, la reserva tiene venta registrada';
+                header('Location: index.php?page=reservas');
+                exit();
+            }
+
+            // Eliminar reserva (los detalles se eliminan por CASCADE)
+            $this->reservaModel->delete($idReserva);
+
+            $_SESSION['flash']['success'] = 'Reserva eliminada exitosamente';
+            
+        } catch (Exception $e) {
+            $_SESSION['flash']['error'] = 'Error al eliminar la reserva: ' . $e->getMessage();
+        }
+
+        header('Location: index.php?page=reservas');
+        exit();
+    }
 }

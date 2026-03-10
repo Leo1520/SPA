@@ -133,4 +133,21 @@ class DetalleReserva {
         $stmt = $this->db->prepare("DELETE FROM Detalle_Reserva WHERE id_reserva = ?");
         return $stmt->execute([$idReserva]);
     }
+
+    /**
+     * Actualizar observaciones del primer detalle de una reserva
+     * Usado principalmente para guardar motivo de cancelación
+     * @param int $idReserva
+     * @param string $observaciones
+     * @return bool
+     */
+    public function updateObservacionesByReserva($idReserva, $observaciones) {
+        $stmt = $this->db->prepare("
+            UPDATE Detalle_Reserva 
+            SET observaciones = CONCAT(COALESCE(observaciones, ''), ' ', ?)
+            WHERE id_reserva = ? 
+            LIMIT 1
+        ");
+        return $stmt->execute([$observaciones, $idReserva]);
+    }
 }

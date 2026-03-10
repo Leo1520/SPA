@@ -116,6 +116,12 @@ try {
                 case 'store':
                     $controller->store();
                     break;
+                case 'updateEstado':
+                    $controller->updateEstado();
+                    break;
+                case 'delete':
+                    $controller->delete();
+                    break;
                 default:
                     $controller->index();
                     break;
