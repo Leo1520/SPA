@@ -83,4 +83,33 @@ class Usuario {
             $id
         ]);
     }
+
+    /**
+     * Verificar si un username ya existe
+     * @param string $username
+     * @param int|null $excludeId ID a excluir en la búsqueda
+     * @return bool
+     */
+    public function existsByUsername($username, $excludeId = null) {
+        $query = "SELECT COUNT(*) FROM Usuario WHERE username = :username";
+        if ($excludeId !== null) {
+            $query .= " AND id != :excludeId";
+        }
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':username', $username);
+        if ($excludeId !== null) {
+            $stmt->bindValue(':excludeId', $excludeId, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Obtener todos los roles disponibles
+     * @return array
+     */
+    public function getAllRoles() {
+        $stmt = $this->db->query("SELECT * FROM Rol ORDER BY nombre");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

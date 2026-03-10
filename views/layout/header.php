@@ -81,7 +81,7 @@ $canAccessSalas = $idRol == 1; // Solo Admin
             <?php endif; ?>
 
             <?php if ($canAccessEmpleados): ?>
-            <a href="#" class="sidebar-item disabled" title="Próximamente">
+            <a href="index.php?page=empleados" class="sidebar-item <?= $currentPage === 'empleados' ? 'active' : '' ?>">
                 <span class="sidebar-icon">👔</span>
                 <span class="sidebar-text">Empleados</span>
             </a>
@@ -95,9 +95,16 @@ $canAccessSalas = $idRol == 1; // Solo Admin
             <?php endif; ?>
 
             <?php if ($canAccessSalas): ?>
-            <a href="#" class="sidebar-item disabled" title="Próximamente">
+            <a href="index.php?page=salas" class="sidebar-item <?= $currentPage === 'salas' ? 'active' : '' ?>">
                 <span class="sidebar-icon">🏠</span>
                 <span class="sidebar-text">Salas</span>
+            </a>
+            <?php endif; ?>
+
+            <?php if ($canAccessSalas): ?>
+            <a href="index.php?page=insumos" class="sidebar-item <?= $currentPage === 'insumos' ? 'active' : '' ?>">
+                <span class="sidebar-icon">🧴</span>
+                <span class="sidebar-text">Insumos</span>
             </a>
             <?php endif; ?>
 

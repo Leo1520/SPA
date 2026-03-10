@@ -200,6 +200,87 @@ try {
             break;
 
         // ──────────────────────────────────
+        // GESTIÓN DE EMPLEADOS (RF014)
+        // ──────────────────────────────────
+        case 'empleados':
+            $controller = new EmpleadoController();
+            switch ($action) {
+                case 'create':
+                    $controller->create();
+                    break;
+                case 'store':
+                    $controller->store();
+                    break;
+                case 'edit':
+                    $controller->edit();
+                    break;
+                case 'update':
+                    $controller->update();
+                    break;
+                case 'toggle':
+                    $controller->toggle();
+                    break;
+                default:
+                    $controller->index();
+                    break;
+            }
+            break;
+
+        // ──────────────────────────────────
+        // GESTIÓN DE SALAS (RF008)
+        // ──────────────────────────────────
+        case 'salas':
+            $controller = new SalaController();
+            switch ($action) {
+                case 'create':
+                    $controller->create();
+                    break;
+                case 'store':
+                    $controller->store();
+                    break;
+                case 'edit':
+                    $controller->edit();
+                    break;
+                case 'update':
+                    $controller->update();
+                    break;
+                case 'delete':
+                    $controller->delete();
+                    break;
+                default:
+                    $controller->index();
+                    break;
+            }
+            break;
+
+        // ──────────────────────────────────
+        // GESTIÓN DE INSUMOS (RF009)
+        // ──────────────────────────────────
+        case 'insumos':
+            $controller = new InsumoController();
+            switch ($action) {
+                case 'create':
+                    $controller->create();
+                    break;
+                case 'store':
+                    $controller->store();
+                    break;
+                case 'edit':
+                    $controller->edit();
+                    break;
+                case 'update':
+                    $controller->update();
+                    break;
+                case 'delete':
+                    $controller->delete();
+                    break;
+                default:
+                    $controller->index();
+                    break;
+            }
+            break;
+
+        // ──────────────────────────────────
         // REPORTES (RF015/RF016)
         // ──────────────────────────────────
         case 'reportes':
