@@ -168,8 +168,7 @@ class VentaController {
                     'precio_unitario' => $detalle['precio'],
                     'subtotal' => $detalle['precio'],
                     'id_venta' => $idVenta,
-                    'id_servicio' => $detalle['id_servicio'],
-                    'id_empleado' => $detalle['id_empleado']
+                    'id_servicio' => $detalle['id_servicio']
                 ]);
             }
 

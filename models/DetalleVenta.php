@@ -22,16 +22,15 @@ class DetalleVenta {
     public function create($data) {
         $stmt = $this->db->prepare("
             INSERT INTO Detalle_Venta 
-            (cantidad, precio_unitario, subtotal, id_venta, id_servicio, id_empleado)
-            VALUES (?, ?, ?, ?, ?, ?)
+            (cantidad, precio_unitario, subtotal, id_venta, id_servicio)
+            VALUES (?, ?, ?, ?, ?)
         ");
         $stmt->execute([
             $data['cantidad'],
             $data['precio_unitario'],
             $data['subtotal'],
             $data['id_venta'],
-            $data['id_servicio'],
-            $data['id_empleado'] ?? null
+            $data['id_servicio']
         ]);
         return $this->db->lastInsertId();
     }
@@ -48,7 +47,9 @@ class DetalleVenta {
                    CONCAT(e.nombre, ' ', e.apellido) as empleado_nombre
             FROM Detalle_Venta dv
             INNER JOIN Servicio s ON dv.id_servicio = s.id
-            LEFT JOIN Empleado e ON dv.id_empleado = e.id
+            INNER JOIN Venta v ON dv.id_venta = v.id
+            LEFT JOIN Detalle_Reserva dr ON dr.id_reserva = v.id_reserva AND dr.id_servicio = dv.id_servicio
+            LEFT JOIN Empleado e ON dr.id_empleado = e.id
             WHERE dv.id_venta = ?
             ORDER BY dv.id
         ");
