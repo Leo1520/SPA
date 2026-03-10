@@ -110,17 +110,15 @@
                         <th>Método</th>
                         <th>Monto</th>
                         <th>Referencia</th>
-                        <th>Registrado por</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($pagos as $pago): ?>
                         <tr>
-                            <td><?= date('d/m/Y H:i', strtotime($pago['fecha'])) ?></td>
+                            <td><?= date('d/m/Y H:i', strtotime($pago['fecha_pago'])) ?></td>
                             <td><?= htmlspecialchars($pago['metodo_pago']) ?></td>
                             <td>Bs. <?= number_format($pago['monto'], 2) ?></td>
                             <td><?= htmlspecialchars($pago['referencia'] ?? '-') ?></td>
-                            <td><?= htmlspecialchars($pago['registrado_por']) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

@@ -89,8 +89,7 @@ class PagoController {
                 'monto' => $monto,
                 'referencia' => $referencia ?: null,
                 'id_venta' => $idVenta,
-                'id_metodo_pago' => $idMetodoPago,
-                'id_usuario' => $_SESSION['user_id']
+                'id_metodo_pago' => $idMetodoPago
             ]);
 
             $_SESSION['flash']['success'] = 'Pago registrado exitosamente';

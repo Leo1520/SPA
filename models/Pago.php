@@ -22,14 +22,11 @@ class Pago {
     public function getByVenta($idVenta) {
         $stmt = $this->db->prepare("
             SELECT p.*, 
-                   mp.nombre as metodo_pago,
-                   COALESCE(CONCAT(e.nombre, ' ', e.apellido), u.username) as registrado_por
+                   mp.nombre as metodo_pago
             FROM Pago p
             INNER JOIN Metodo_Pago mp ON p.id_metodo_pago = mp.id
-            INNER JOIN Usuario u ON p.id_usuario = u.id
-            LEFT JOIN Empleado e ON u.id_empleado = e.id
             WHERE p.id_venta = ?
-            ORDER BY p.fecha DESC
+            ORDER BY p.fecha_pago DESC
         ");
         $stmt->execute([$idVenta]);
         return $stmt->fetchAll();
@@ -58,15 +55,14 @@ class Pago {
      */
     public function create($data) {
         $stmt = $this->db->prepare("
-            INSERT INTO Pago (monto, referencia, fecha, id_venta, id_metodo_pago, id_usuario)
-            VALUES (?, ?, NOW(), ?, ?, ?)
+            INSERT INTO Pago (monto, referencia, id_venta, id_metodo_pago)
+            VALUES (?, ?, ?, ?)
         ");
         $stmt->execute([
             $data['monto'],
             $data['referencia'] ?? null,
             $data['id_venta'],
-            $data['id_metodo_pago'],
-            $data['id_usuario']
+            $data['id_metodo_pago']
         ]);
         return $this->db->lastInsertId();
     }
