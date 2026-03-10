@@ -170,6 +170,36 @@ try {
             break;
 
         // ──────────────────────────────────
+        // GESTIÓN DE SERVICIOS (RF007)
+        // ──────────────────────────────────
+        case 'servicios':
+            $controller = new ServicioController();
+            switch ($action) {
+                case 'create':
+                    $controller->create();
+                    break;
+                case 'store':
+                    $controller->store();
+                    break;
+                case 'edit':
+                    $controller->edit();
+                    break;
+                case 'update':
+                    $controller->update();
+                    break;
+                case 'toggle':
+                    $controller->toggle();
+                    break;
+                case 'delete':
+                    $controller->delete();
+                    break;
+                default:
+                    $controller->index();
+                    break;
+            }
+            break;
+
+        // ──────────────────────────────────
         // DASHBOARD (redirección por defecto)
         // ──────────────────────────────────
         default:

@@ -88,7 +88,7 @@ $canAccessSalas = $idRol == 1; // Solo Admin
             <?php endif; ?>
 
             <?php if ($canAccessServicios): ?>
-            <a href="#" class="sidebar-item disabled" title="Próximamente">
+            <a href="index.php?page=servicios" class="sidebar-item <?= $currentPage === 'servicios' ? 'active' : '' ?>">
                 <span class="sidebar-icon">💆</span>
                 <span class="sidebar-text">Servicios</span>
             </a>
