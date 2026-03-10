@@ -46,7 +46,7 @@ function getEstadoServicioBadge($activo) {
                                 <small style="color: #666;"><?= htmlspecialchars(substr($servicio['descripcion'], 0, 60)) ?><?= strlen($servicio['descripcion']) > 60 ? '...' : '' ?></small>
                             <?php endif; ?>
                         </td>
-                        <td><?= htmlspecialchars($servicio['duracion_minutos']) ?></td>
+                        <td><?= htmlspecialchars($servicio['duracion_min'] ?? '-') ?></td>
                         <td>Bs. <?= number_format($servicio['precio'], 2) ?></td>
                         <td>
                             <span class="badge <?= getEstadoServicioBadge($servicio['activo']) ?>">

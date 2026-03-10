@@ -54,13 +54,13 @@ class Servicio {
      */
     public function create($data) {
         $stmt = $this->db->prepare("
-            INSERT INTO Servicio (nombre, descripcion, duracion_minutos, precio, activo)
+            INSERT INTO Servicio (nombre, descripcion, duracion_min, precio, activo)
             VALUES (?, ?, ?, ?, ?)
         ");
         $stmt->execute([
             $data['nombre'],
             $data['descripcion'] ?? null,
-            $data['duracion_minutos'],
+            $data['duracion_min'],
             $data['precio'],
             $data['activo'] ?? 1
         ]);
@@ -77,13 +77,13 @@ class Servicio {
     public function update($id, $data) {
         $stmt = $this->db->prepare("
             UPDATE Servicio 
-            SET nombre = ?, descripcion = ?, duracion_minutos = ?, precio = ?, activo = ?
+            SET nombre = ?, descripcion = ?, duracion_min = ?, precio = ?, activo = ?
             WHERE id = ?
         ");
         return $stmt->execute([
             $data['nombre'],
             $data['descripcion'] ?? null,
-            $data['duracion_minutos'],
+            $data['duracion_min'],
             $data['precio'],
             $data['activo'] ?? 1,
             $id

@@ -65,7 +65,7 @@ class ServicioController {
         $data = [
             'nombre' => trim($_POST['nombre'] ?? ''),
             'descripcion' => trim($_POST['descripcion'] ?? ''),
-            'duracion_minutos' => intval($_POST['duracion_minutos'] ?? 0),
+            'duracion_min' => intval($_POST['duracion_min'] ?? 0),
             'precio' => floatval($_POST['precio'] ?? 0),
             'activo' => isset($_POST['activo']) ? 1 : 0
         ];
@@ -160,7 +160,7 @@ class ServicioController {
         $data = [
             'nombre' => trim($_POST['nombre'] ?? ''),
             'descripcion' => trim($_POST['descripcion'] ?? ''),
-            'duracion_minutos' => intval($_POST['duracion_minutos'] ?? 0),
+            'duracion_min' => intval($_POST['duracion_min'] ?? 0),
             'precio' => floatval($_POST['precio'] ?? 0),
             'activo' => isset($_POST['activo']) ? 1 : 0
         ];
@@ -277,8 +277,8 @@ class ServicioController {
         }
 
         // Duración
-        if ($data['duracion_minutos'] <= 0) {
-            $errors['duracion_minutos'] = 'La duración debe ser mayor a 0';
+        if ($data['duracion_min'] <= 0) {
+            $errors['duracion_min'] = 'La duración debe ser mayor a 0';
         }
 
         // Precio

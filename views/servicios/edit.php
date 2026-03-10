@@ -60,21 +60,21 @@
 
         <!-- Duración en minutos -->
         <div class="form-group">
-            <label for="duracion_minutos" class="form-label required">Duración (minutos)</label>
+            <label for="duracion_min" class="form-label required">Duración (minutos)</label>
             <input 
                 type="number" 
                 class="form-control" 
-                id="duracion_minutos" 
-                name="duracion_minutos" 
-                value="<?= htmlspecialchars($old['duracion_minutos'] ?? $servicio['duracion_minutos']) ?>" 
+                id="duracion_min" 
+                name="duracion_min" 
+                value="<?= htmlspecialchars($old['duracion_min'] ?? $servicio['duracion_min']) ?>" 
                 required
                 min="1"
                 max="999"
                 step="1"
                 placeholder="Ej: 60, 90, 120">
             <small class="form-help">Duración estándar del servicio en minutos</small>
-            <?php if (isset($errors['duracion_minutos'])): ?>
-                <div class="form-error"><?= htmlspecialchars($errors['duracion_minutos']) ?></div>
+            <?php if (isset($errors['duracion_min'])): ?>
+                <div class="form-error"><?= htmlspecialchars($errors['duracion_min']) ?></div>
             <?php endif; ?>
         </div>
 
