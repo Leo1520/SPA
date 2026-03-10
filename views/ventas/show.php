@@ -109,7 +109,6 @@
                         <th>Fecha</th>
                         <th>Método</th>
                         <th>Monto</th>
-                        <th>Referencia</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -118,7 +117,6 @@
                             <td><?= date('d/m/Y H:i', strtotime($pago['fecha_pago'])) ?></td>
                             <td><?= htmlspecialchars($pago['metodo_pago']) ?></td>
                             <td>Bs. <?= number_format($pago['monto'], 2) ?></td>
-                            <td><?= htmlspecialchars($pago['referencia'] ?? '-') ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -159,17 +157,6 @@
                         required
                     >
                     <small style="color: #666;">Máximo: Bs. <?= number_format($saldoPendiente, 2) ?></small>
-                </div>
-
-                <div class="form-group">
-                    <label for="referencia">Referencia / Comprobante (Opcional)</label>
-                    <input 
-                        type="text" 
-                        id="referencia" 
-                        name="referencia" 
-                        class="form-control"
-                        placeholder="Número de transacción, cheque, etc."
-                    >
                 </div>
 
                 <div class="form-actions">

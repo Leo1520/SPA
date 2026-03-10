@@ -41,7 +41,6 @@ class PagoController {
         $idVenta = $_POST['id_venta'] ?? null;
         $monto = floatval($_POST['monto'] ?? 0);
         $idMetodoPago = $_POST['id_metodo_pago'] ?? null;
-        $referencia = trim($_POST['referencia'] ?? '');
 
         // Validaciones
         $errors = [];
@@ -87,7 +86,6 @@ class PagoController {
             // Registrar pago
             $this->pagoModel->create([
                 'monto' => $monto,
-                'referencia' => $referencia ?: null,
                 'id_venta' => $idVenta,
                 'id_metodo_pago' => $idMetodoPago
             ]);

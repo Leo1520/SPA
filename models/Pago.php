@@ -55,12 +55,11 @@ class Pago {
      */
     public function create($data) {
         $stmt = $this->db->prepare("
-            INSERT INTO Pago (monto, referencia, id_venta, id_metodo_pago)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO Pago (monto, id_venta, id_metodo_pago)
+            VALUES (?, ?, ?)
         ");
         $stmt->execute([
             $data['monto'],
-            $data['referencia'] ?? null,
             $data['id_venta'],
             $data['id_metodo_pago']
         ]);
