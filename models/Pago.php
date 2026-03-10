@@ -23,10 +23,11 @@ class Pago {
         $stmt = $this->db->prepare("
             SELECT p.*, 
                    mp.nombre as metodo_pago,
-                   CONCAT(u.nombre, ' ', u.apellido) as registrado_por
+                   COALESCE(CONCAT(e.nombre, ' ', e.apellido), u.username) as registrado_por
             FROM Pago p
             INNER JOIN Metodo_Pago mp ON p.id_metodo_pago = mp.id
             INNER JOIN Usuario u ON p.id_usuario = u.id
+            LEFT JOIN Empleado e ON u.id_empleado = e.id
             WHERE p.id_venta = ?
             ORDER BY p.fecha DESC
         ");
