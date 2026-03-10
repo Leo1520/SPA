@@ -126,7 +126,10 @@ class Venta {
                    CONCAT(e.nombre, ' ', e.apellido) as empleado_nombre
             FROM Detalle_Venta dv
             INNER JOIN Servicio s ON dv.id_servicio = s.id
-            LEFT JOIN Empleado e ON dv.id_empleado = e.id
+            INNER JOIN Venta v ON dv.id_venta = v.id
+            LEFT JOIN Reserva r ON v.id_reserva = r.id
+            LEFT JOIN Detalle_Reserva dr ON (r.id = dr.id_reserva AND dv.id_servicio = dr.id_servicio)
+            LEFT JOIN Empleado e ON dr.id_empleado = e.id
             WHERE dv.id_venta = ?
             ORDER BY dv.id
         ");
