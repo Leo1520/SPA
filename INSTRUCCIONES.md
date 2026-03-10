@@ -16,74 +16,55 @@
 
 ### 1. Verificar Base de Datos
 
-Asegúrese de que la base de datos `spa_america` existe y tiene todas las tablas:
-- Cliente
-- Reserva
-- Detalle_Reserva
-- Servicio
-- Empleado
-- Sala
-- Usuario
-- Rol
-
-### 2. Crear Usuario de Prueba
-
-Ejecute el siguiente script SQL para crear el usuario administrador de prueba:
+Asegúrese de que la base de datos `spa_america` existe. Si no existe, créela:
 
 ```sql
--- Insertar roles
-INSERT INTO Rol (nombre) VALUES 
-('Administrador'), 
-('Recepcionista'), 
-('Cajero'), 
-('Terapeuta');
-
--- Insertar empleado administrador
-INSERT INTO Empleado (nombre, apellido, ci, cargo, activo) 
-VALUES ('Admin', 'Sistema', '00000000', 'Administrador', 1);
-
--- Insertar usuario administrador (password: admin123)
-INSERT INTO Usuario (username, password, activo, id_rol, id_empleado) 
-VALUES ('admin', SHA2('admin123', 256), 1, 1, 1);
+CREATE DATABASE spa_america CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-### 3. Insertar Datos de Ejemplo (Opcional)
+Luego ejecute el script de creación de tablas y población de datos que ya tiene.
 
-Para probar el sistema, puede insertar datos de ejemplo:
+### 2. Cargar Datos de Prueba
 
-```sql
--- Servicios de ejemplo
-INSERT INTO Servicio (nombre, descripcion, duracion_min, precio, activo) VALUES
-('Masaje Relajante', 'Masaje corporal completo', 60, 150.00, 1),
-('Facial Hidratante', 'Tratamiento facial con hidratación profunda', 45, 120.00, 1),
-('Manicure y Pedicure', 'Servicio completo de uñas', 90, 80.00, 1),
-('Tratamiento Capilar', 'Hidratación y nutrición capilar', 60, 100.00, 1);
+**Ya tiene un script completo de población de datos** en el archivo `SPA_AMERICA.sql` que incluye:
+- Roles (Administrador, Recepcionista, Cajero, Terapeuta)
+- 8 Empleados con diferentes cargos
+- 6 Salas
+- 15 Servicios
+- 15 Clientes
+- Reservas de ejemplo (completadas, confirmadas, pendientes, canceladas)
+- Usuarios del sistema
 
--- Salas de ejemplo
-INSERT INTO Sala (nombre, capacidad, ubicacion) VALUES
-('Sala Zen', 1, 'Planta Baja - Ala Este'),
-('Sala Relax', 1, 'Planta Baja - Ala Oeste'),
-('Sala Premium', 2, 'Primera Planta'),
-('Sala VIP', 1, 'Primera Planta');
-
--- Empleados adicionales (terapeutas)
-INSERT INTO Empleado (nombre, apellido, ci, cargo, activo) VALUES
-('María', 'González', '12345678', 'Terapeuta', 1),
-('Juan', 'Pérez', '87654321', 'Terapeuta', 1),
-('Ana', 'López', '11223344', 'Recepcionista', 1);
-
--- Usuario recepcionista (password: recepc123)
-INSERT INTO Usuario (username, password, activo, id_rol, id_empleado) 
-VALUES ('recepcion', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1, 2, 3);
+**Ejecute el script de población completo:**
+```bash
+# En MySQL Workbench o terminal de Laragon:
+mysql -u root -p spa_america < SPA_AMERICA.sql
 ```
+
+O ejecute directamente el contenido del archivo en MySQL Workbench.
+
+### 3. Usuarios Disponibles
+
+El sistema viene con los siguientes usuarios precargados:
+
+| Usuario  | Contraseña | Rol            |
+|----------|------------|----------------|
+| admin    | password   | Administrador  |
+| valeria  | password   | Recepcionista  |
+| sofia    | password   | Terapeuta      |
+| daniela  | password   | Terapeuta      |
+| luciana  | password   | Terapeuta      |
+| roberto  | password   | Terapeuta      |
+| marcela  | password   | Cajero         |
+| fernando | password   | Recepcionista  |
 
 ### 4. Acceder al Sistema
 
 1. Abra su navegador y vaya a: `http://localhost/SPA/`
 2. El sistema lo redirigirá automáticamente a la página de login
-3. Ingrese las credenciales de prueba:
+3. Ingrese las credenciales:
    - **Usuario:** admin
-   - **Contraseña:** admin123
+   - **Contraseña:** password
 
 ════════════════════════════════════════════════════════════════
 ## 🎯 FUNCIONALIDADES IMPLEMENTADAS
@@ -197,10 +178,14 @@ SPA/
 ## 📝 NOTAS IMPORTANTES
 ════════════════════════════════════════════════════════════════
 
-1. **Usuario de Prueba:** El sistema soporta tanto passwords con `password_hash()` 
-   como el usuario de prueba con SHA256 (para compatibilidad con el script inicial).
+1. **Sistema de Contraseñas:** El sistema soporta tanto passwords con `password_hash()` 
+   como SHA256. Todos los usuarios del script de población usan password_hash() 
+   con la contraseña 'password'.
 
-2. **Roles:** El sistema verifica permisos por rol. Solo Administrador y 
+2. **Datos Precargados:** El sistema incluye 15 clientes, 8 empleados, 15 servicios, 
+   6 salas y reservas de ejemplo en diferentes estados.
+
+3. **Roles:** El sistema verifica permisos por rol. Solo Administrador y 
    Recepcionista pueden acceder a Clientes y Reservas.
 
 3. **Transacciones:** La creación de reservas usa transacciones para garantizar 
